@@ -25,7 +25,6 @@ Creating a "good" task reminder app which reminds you of tasks you have to do
 ### Technologies/Components Used
 For Software:
 - HTML, CSS, JavaScript
-- ReactJS
 - NodeJS
 - Visual Studio Code
 
@@ -43,13 +42,16 @@ in VSC run the app.js file and follow the link which appears in the terminak
 For Software:
 
 # Screenshots (Add at least 3)
-![photo_2024-10-26_07-02-29](https://github.com/user-attachments/assets/70e18a11-8c89-4436-86c2-d9e75fe97054) - Main Page
-*it shows the front page with the add tasks button*
+![photo_2024-10-26_08-02-18](https://github.com/user-attachments/assets/6974c621-cbea-4b95-93f6-7de3c0049569) - Main Page
 
-![photo_2024-10-26_07-02-34](https://github.com/user-attachments/assets/731bc77d-da0f-436d-8b69-5b08cf65a54a) - Adding tasks
+*it shows the front page with the add tasks button*
+ 
+![photo_2024-10-26_08-02-15](https://github.com/user-attachments/assets/beabda07-715d-49a6-9b8c-da4671258123) - Adding tasks
+
 *A page to add task detials and set deadline*
 
-![photo_2024-10-26_07-02-38](https://github.com/user-attachments/assets/a6fe9930-3c6f-49dd-a394-fec872b2b2ea) - Task Managing Page
+![photo_2024-10-26_08-02-11](https://github.com/user-attachments/assets/1de6fd1d-d1db-4e18-9766-ec71bf5b1935) - Task Managing Page
+
 *A page where tasks can be deleted or cleared*
 
 # Diagrams
@@ -71,9 +73,9 @@ For Hardware:
 ![Build](Add photos of build process here)
 *Explain the build steps*
 
-![Final] [photo_2024-10-26_07-02-29](https://github.com/user-attachments/assets/0e08ba81-4d7e-45cc-add5-d4441c2ec2bd)
-         ![photo_2024-10-26_07-02-34](https://github.com/user-attachments/assets/48482932-fe37-4420-b2f0-e89ff1a5faee)
-        ![photo_2024-10-26_07-02-38](https://github.com/user-attachments/assets/6257520a-76dd-425c-9ade-bf2866da4ad8)
+![Final] - ![photo_2024-10-26_08-02-18](https://github.com/user-attachments/assets/6974c621-cbea-4b95-93f6-7de3c0049569)
+           ![photo_2024-10-26_08-02-15](https://github.com/user-attachments/assets/beabda07-715d-49a6-9b8c-da4671258123)
+           ![photo_2024-10-26_08-02-11](https://github.com/user-attachments/assets/1de6fd1d-d1db-4e18-9766-ec71bf5b1935)         
 
 *The user can add a task along with its deadline which is added to the website.  *
 
