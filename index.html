@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Even Bother? - Reminder App</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fafafa;
+            margin: 15% auto;
+            padding: 20px;
+            border: 3px dashed #ccc;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            animation: wobble 0.5s ease;
+        }
+
+        @keyframes wobble {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ff4444;
+            transform: rotate(90deg);
+            transition: transform 0.3s ease;
+        }
+
+        .add-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ffcccb;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .add-button:hover {
+            transform: rotate(180deg);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], 
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        input[type="time"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #ffcccb;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+
+        .tasks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .task-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ffcccb;
+            transition: transform 0.3s ease;
+            position: relative;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+        }
+
+        .task-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #333;
+            border-bottom: 2px dashed #ffcccb;
+            padding-bottom: 5px;
+        }
+
+        .task-description {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .task-time {
+            color: #999;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .delete-task {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .delete-task:hover {
+            opacity: 1;
+        }
+
+        .importance-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        #quote {
+            text-align: center;
+            font-style: italic;
+            margin: 20px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>✨ Another Pointless To-Do List ✨</h1>
+    
+    <div id="quote">Loading your daily demotivation...</div>
+    
+    <div class="tasks-container" id="tasksContainer">
+        <!-- Tasks will be added here -->
+    </div>
+
+    <button class="add-button" id="addTaskBtn">+</button>
+
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <form id="reminderForm">
+                <div class="form-group">
+                    <label for="title">Thing You'll Probably Never Do:</label>
+                    <input type="text" id="title" name="title" required 
+                        placeholder="Like 'getting your life together'...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Elaborate on Your False Hopes:</label>
+                    <textarea id="description" name="description" rows="4" required 
+                        placeholder="Details of another task you'll inevitably procrastinate on..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">When You'll Actually Do This:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>How Important Is This Really?</label>
+                    <input type="range" id="importance" min="0" max="100" value="50">
+                    <span id="importance-label">Meh</span>
+                </div>
+                
+                <button type="submit">Add to Never-Do List</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const quotes = [
+            "Remember: Every task you add is another disappointment waiting to happen!",
+            "Your past self would be so disappointed in your current to-do list.",
+            "Adding tasks won't make you more productive, but here we are...",
+            "Dream big, disappoint bigger!",
+            "Future you will probably hate past you for this.",
+            "Another day, another unrealistic goal!",
+            "Why do today what you can perpetually postpone?",
+            "Your procrastination level is over 9000!",
+            "This task will look great in your 'eventually' folder.",
+            "Congratulations on pretending to be productive!"
+        ];
+
+        // Initialize
+        document.getElementById('quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // Modal handling
+        const modal = document.getElementById('taskModal');
+        const addBtn = document.getElementById('addTaskBtn');
+        const closeBtn = document.getElementById('closeModal');
+
+        addBtn.onclick = () => {
+            modal.style.display = "block";
+            addBtn.style.transform = "rotate(45deg)";
+        }
+
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+            addBtn.style.transform = "rotate(0deg)";
+        }
+
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                addBtn.style.transform = "rotate(0deg)";
+            }
+        }
+
+        // Importance slider
+        const importanceSlider = document.getElementById('importance');
+        const importanceLabel = document.getElementById('importance-label');
+        importanceSlider.addEventListener('input', () => {
+            const value = importanceSlider.value;
+            if (value < 20) importanceLabel.textContent = "Why bother?";
+            else if (value < 40) importanceLabel.textContent = "Meh";
+            else if (value < 60) importanceLabel.textContent = "Whatever";
+            else if (value < 80) importanceLabel.textContent = "I guess it matters";
+            else importanceLabel.textContent = "Who are you kidding?";
+        });
+
+        // Form submission
+        document.getElementById('reminderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                time: document.getElementById('time').value, // Changed from date to time
+                importance: document.getElementById('importance').value
+            };
+
+            fetch('/add-reminder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                addTaskCard(formData);
+                modal.style.display = "none";
+                addBtn.style.transform = "rotate(0deg)";
+                this.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Failed successfully! (That's what you wanted, right?)");
+            });
+        });
+
+        function addTaskCard(task) {
+            const container = document.getElementById('tasksContainer');
+            const card = document.createElement('div');
+            card.className = 'task-card';
+            
+            const importanceClass = task.importance > 75 ? 'high' : 
+                                  task.importance > 50 ? 'medium' : 'low';
+            
+            card.innerHTML = `
+                <div class="task-title">${task.title}</div>
+                <div class="task-description">${task.description}</div>
+                <div class="task-time">Due: ${task.time}</div>
+                <div class="importance-indicator">Importance: ${task.importance}%</div>
+                <button class="delete-task" onclick="this.parentElement.remove()">🗑️</button>
+            `;
+            
+            container.prepend(card);
+        }
+
+        // Add some snarky hover effects to input fields
+        const inputs = document.querySelectorAll('input[type="text"], textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.length > 10) {
+                    const snarkyComments = [
+                        "Wow, you're really putting thought into this...",
+                        "Sure, that sounds *totally* achievable...",
+                        "Planning to actually do this one?",
+                        "Adding to your collection of unfulfilled dreams?"
+                    ];
+                    this.setAttribute('title', snarkyComments[Math.floor(Math.random() * snarkyComments.length)]);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
